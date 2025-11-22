@@ -349,7 +349,7 @@ def build_crm_table(events_df: pd.DataFrame) -> pd.DataFrame:
     crm["ltv_bucket"] = crm.apply(assign_ltv, axis=1)
 
     # Tidy columns
-    crm["signup_date"] = crm["signup_date"].dt.date
+    crm["signup_date"] = pd.to_datetime(crm["signup_date"]).dt.date
 
     return crm[["user_id", "signup_date", "primary_channel", "region", "ltv_bucket"]]
 
