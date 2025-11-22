@@ -1,0 +1,69 @@
+Marketing Mix Modeling (MMM) — Summary of What We Did
+
+Data Preparation
+	•	Loaded daily channel-level spend and daily revenue data.
+	•	Pivoted data so each day has spend columns for: facebook, search, youtube, email.
+	•	Merged the channel spend data with daily revenue to form the MMM dataset.
+
+Adstock Transformation (Carryover Effect)
+	•	Implemented geometric adstock to model how ad effects persist across days.
+	•	Created new variables like facebook_adstock, search_adstock, etc.
+	•	Purpose: simulate memory effect in consumer behavior.
+	•	Carryover effect
+	•	Lagged impact
+	•	Adstock decay
+
+Diminishing Returns (Nonlinear Saturation)
+	•	Applied log1p (log(1+x)) transformation to adstock variables.
+	•	This models the fact that incremental ROI declines as spend increases.
+	•	Created variables like facebook_dr representing diminished-response media inputs.
+	•	Saturation
+	•	Diminishing returns
+	•	Concave response function
+
+OLS Regression Model (Stage 1 MMM)
+	•	Built the MMM using statsmodels OLS (Ordinary Least Squares).
+	•	Used sm.add_constant() to include intercept (baseline sales).
+	•	Extracted:
+	•	Coefficients (effect sizes)
+	•	p-values (significance)
+	•	R² (model fit)
+	•	Standard errors, CI, diagnostics
+	•	OLS regression
+	•	Intercept
+	•	Coefficient
+	•	Significance
+	•	Baseline sales
+
+
+Channel Contribution Calculation
+	•	Multiplied each channel’s:
+	•	Coefficient (β) × Transformed spend value
+	•	Produced daily incremental revenue contributions like:
+	•	facebook_contrib
+	•	search_contrib
+	•	Summed them to quantify each channel’s total contribution over the period.
+	•	Incremental contribution
+	•	Channel lift
+	•	Attribution via MMM coefficients
+
+ROI Calculation (Return on Investment)
+	•	Computed total spend per channel.
+	•	Calculated ROI = contribution / spend for each channel.
+	•	Interpreted ROI to determine which channels are:
+	•	Under-spent
+	•	Efficient
+	•	Inefficient
+	•	Incremental ROI
+	•	Marginal ROI
+	•	Spend efficiency
+
+Response Curve Construction
+	•	Simulated hypothetical spend levels for each channel.
+	•	Re-applied adstock + log transform to those values.
+	•	Multiplied by channel coefficients to compute predicted revenue.
+	•	Graphed response curves (spend → revenue curves).
+	•	Response function
+	•	Saturation curve
+	•	Hypothetical scenarios
+	•	Model-based simulation
